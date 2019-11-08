@@ -1279,7 +1279,6 @@ METHOD(crypto_tester_t, test_drbg, bool,
 
 failure:
 		drbg->destroy(drbg);
-		entropy->destroy(entropy);
 		chunk_free(&out);
 		if (failed)
 		{
@@ -1498,11 +1497,13 @@ static bool test_single_ke(key_exchange_method_t method, ke_test_vector_t *v,
 
 	if (key_exchange_is_kem(method))
 	{
+		/* entropy instance will be owned by drbg */
 		entropy = rng_tester_create(v->seed);
 		drbg = lib->crypto->create_drbg(lib->crypto, DRBG_CTR_AES256, 256,
 										entropy, chunk_empty);
 		if (!drbg)
 		{
+			entropy->destroy(entropy);
 			goto failure;
 		}
 		if (!a->set_seed(a, chunk_empty, drbg) ||
@@ -1556,7 +1557,6 @@ failure:
 	chunk_free(&a_sec);
 	chunk_free(&b_sec);
 	DESTROY_IF(drbg);
-	DESTROY_IF(entropy);
 
 	return success;
 }
