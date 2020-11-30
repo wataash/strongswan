@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CLionExternalBuildManager">
+    <target id="8390235e-f4aa-4761-9f08-da6b1aa8e595" name="cbt0" projectName="strongswan">
+      <configuration id="e3cf3c91-8c0a-4454-823d-da05836b2579" name="cbt0">
+        <build type="TOOL">
+          <tool actionId="Tool_External Tools_et0" />
+        </build>
+      </configuration>
+    </target>
+  </component>
+</project>

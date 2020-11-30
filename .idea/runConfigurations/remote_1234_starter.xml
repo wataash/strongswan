@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="remote 1234 starter" type="CLion_Remote" remoteCommand="tcp::1234" symbolFile="$USER_HOME$/opt/strongswan/libexec/ipsec/starter" sysroot="">
+    <method v="2" />
+  </configuration>
+</component>

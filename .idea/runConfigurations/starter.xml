@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="starter" type="CLionExternalRunConfiguration" factoryName="Application" PROGRAM_PARAMS="--debug-all --nofork --daemon charon --conf $USER_HOME$/work/ikev2/ipsec.conf" PASS_PARENT_ENVS_2="true" PROJECT_NAME="strongswan" TARGET_NAME="cbt0" CONFIG_NAME="cbt0" RUN_PATH="$PROJECT_DIR$/build/src/starter/.libs/starter">
+    <envs>
+      <env name="IPSEC_DIR" value="$USER_HOME$/usr/opt/strongswan/libexec/ipsec" />
+      <env name="IPSEC_BINDIR" value="$USER_HOME$/usr/opt/strongswan/bin" />
+      <env name="IPSEC_SBINDIR" value="$USER_HOME$/usr/opt/strongswan/sbin" />
+      <env name="IPSEC_CONFDIR" value="$USER_HOME$/usr/opt/strongswan/etc" />
+      <env name="IPSEC_PIDDIR" value="/var/run" />
+      <env name="IPSEC_SCRIPT" value="ipsec" />
+      <env name="IPSEC_VERSION" value="U5.8.2dr1/K5.0.0-32-generic" />
+      <env name="IPSEC_NAME" value="strongSwan" />
+      <env name="IPSEC_STARTER_PID" value="/var/run/starter.charon.pid" />
+      <env name="IPSEC_CHARON_PID" value="/var/run/charon.pid" />
+    </envs>
+    <method v="2">
+      <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+    </method>
+  </configuration>
+</component>
