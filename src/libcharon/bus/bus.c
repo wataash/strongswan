@@ -17,6 +17,7 @@
 #include "bus.h"
 
 #include <stdint.h>
+#include <unistd.h>
 
 #include <threading/thread.h>
 #include <threading/thread_value.h>
@@ -336,7 +337,7 @@ CALLBACK(log_cb, void,
 	log_data_t *data;
 
 	VA_ARGS_VGET(args, data);
-	if (entry->logger->log && entry->levels[data->group] >= data->level)
+	// if (entry->logger->log && entry->levels[data->group] >= data->level)
 	{
 		entry->logger->log(entry->logger, data->group, data->level,
 						   data->thread, data->ike_sa, data->message);
@@ -367,6 +368,7 @@ METHOD(bus_t, vlog, void,
 	linked_list_t *loggers;
 	log_data_t data;
 
+#if 0
 	/* NOTE: This is not 100% thread-safe and done here only because it is
 	 * performance critical.  We therefore ignore the following two issues for
 	 * this particular case:  1) We might miss some log messages if another
@@ -379,12 +381,27 @@ METHOD(bus_t, vlog, void,
 	{
 		return;
 	}
+#else
+	if (getenv("WATAASH_DEBUG") == NULL &&
+		skip_level(&this->max_level[group], level) &&
+		skip_level(&this->max_vlevel[group], level))
+	{
+		return;
+	}
+#endif
 
 	this->log_lock->read_lock(this->log_lock);
 	loggers = this->loggers[group];
 
+#if 0
 	if (this->max_level[group] >= level)
+#else
+	if (this->max_level[group] >= level || getenv("WATAASH_DEBUG") != NULL)
+#endif
 	{
+		wataash_debug_lock();
+		wataash_debug(group, level, WATAASH_DEBUG_KIND_NONE);
+
 		char buf[1024];
 		ssize_t len;
 
@@ -414,7 +431,9 @@ METHOD(bus_t, vlog, void,
 			free(data.message);
 		}
 	}
+#if 0
 	if (this->max_vlevel[group] >= level)
+#endif
 	{
 		data.ike_sa = this->thread_sa->get(this->thread_sa);
 		data.thread = thread_current_id();
@@ -425,6 +444,9 @@ METHOD(bus_t, vlog, void,
 		va_copy(data.args, args);
 		loggers->invoke_function(loggers, vlog_cb, &data);
 		va_end(data.args);
+
+		wataash_debug_reset();
+		wataash_debug_unlock();
 	}
 
 	this->log_lock->unlock(this->log_lock);

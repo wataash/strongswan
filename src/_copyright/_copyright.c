@@ -23,6 +23,8 @@
 
 #include <library.h>
 
+#include <errno.h>
+
 static const char *copyright[] = {
 	"Copyright (C) 1999-2013",
 	"    Henry Spencer, D. Hugh Redelmeier, Michael Richardson, Ken Bantoft,",
@@ -70,6 +72,25 @@ static const char me[] = "ipsec _copyright";	/* for messages */
 int
 main(int argc, char *argv[])
 {
+	{
+		FILE *f = fopen("/tmp/wataash/strongswan.debug.log", "a");
+		if (f == NULL) {
+			fprintf(stderr, "\x1b[31mcannnot open /tmp/wataash/strongswan.debug.log: %s\x1b[0m\n", strerror(errno));
+			f = fopen("/dev/null", "w");
+			if (f == NULL)
+				f = stderr;
+		}
+		fprintf(stderr, "\x1b[34m%s\x1b[37m\n", __FILE__);
+		fprintf(f, "\x1b[34mstroke\x1b[37m\n");
+		for (size_t i = 0; i < argc; i++) {
+			fprintf(stderr, "%zu: %s\n", i, argv[i]);
+			fprintf(f, "%zu: %s\n", i, argv[i]);
+		}
+		fprintf(stderr, "\x1b[0m");
+		fprintf(f, "\x1b[0m");
+		(void)fclose(f);
+	}
+
 	int opt;
 	extern int optind;
 	int errflg = 0;

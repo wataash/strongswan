@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="remote 50505 starter" type="CLion_Remote" debugger="$USER_HOME$/opt/gdb/bin/gdb99" remoteCommand="tcp::50505" symbolFile="$USER_HOME$/opt/strongswan/libexec/ipsec/starter" sysroot="">
+    <method v="2" />
+  </configuration>
+</component>

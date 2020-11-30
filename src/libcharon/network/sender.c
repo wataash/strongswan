@@ -97,8 +97,14 @@ METHOD(sender_t, send_, void,
 	src = packet->get_source(packet);
 	dst = packet->get_destination(packet);
 
+#if 1
 	DBG1(DBG_NET, "sending packet: from %#H to %#H (%zu bytes)", src, dst,
 		 packet->get_data(packet).len);
+	// DBG1(DBG_NET, "-->");
+#else
+	DBG1(DBG_NET, "--> sending packet: from %#H to %#H (%zu bytes)", src, dst,
+		packet->get_data(packet).len);
+#endif
 
 	if (this->send_delay)
 	{

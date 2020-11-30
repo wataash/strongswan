@@ -1103,7 +1103,7 @@ static void process_link(private_kernel_netlink_net_t *this,
 		{
 			case IFLA_IFNAME:
 				name = RTA_DATA(rta);
-				break;
+				break; // breaks only switch
 		}
 		rta = RTA_NEXT(rta, rtasize);
 	}

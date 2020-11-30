@@ -211,6 +211,25 @@ static int send_batch(int type, char *file)
 
 int main(int argc, char *argv[])
 {
+	{
+		FILE *f = fopen("/tmp/wataash/strongswan.debug.log", "a");
+		if (f == NULL) {
+			fprintf(stderr, "\x1b[31mcannnot open /tmp/wataash/strongswan.debug.log: %s\x1b[0m\n", strerror(errno));
+			f = fopen("/dev/null", "w");
+			if (f == NULL)
+				f = stderr;
+		}
+		fprintf(stderr, "\x1b[34m%s\x1b[37m\n", __FILE__);
+		fprintf(f, "\x1b[34mstroke\x1b[37m\n");
+		for (size_t i = 0; i < argc; i++) {
+			fprintf(stderr, "%zu: %s\n", i, argv[i]);
+			fprintf(f, "%zu: %s\n", i, argv[i]);
+		}
+		fprintf(stderr, "\x1b[0m");
+		fprintf(f, "\x1b[0m");
+		(void)fclose(f);
+	}
+
 	if (argc == 3 && strcmp(argv[1], "add") == 0)
 	{
 		return send_msg(WHITELIST_ADD, argv[2]);

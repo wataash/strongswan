@@ -197,7 +197,12 @@ int mem_printf_hook(printf_hook_data_t *data,
 	char ascii_buffer[BYTES_PER_LINE + 1];
 	char *buffer_pos = buffer;
 	char *bytes_pos  = bytes;
+#if 0
 	char *bytes_roof = bytes + len;
+#else
+	// char *bytes_roof = bytes + min(16, len);
+	char *bytes_roof = bytes;
+#endif
 	int line_start = 0;
 	int i = 0;
 	int written = 0;

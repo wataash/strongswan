@@ -49,6 +49,8 @@
 #define OCSP_CERTIFICATE_DIR IPSEC_D_DIR "/ocspcerts"
 #define CRL_DIR IPSEC_D_DIR "/crls"
 #define SECRETS_FILE CONFIG_DIR "/ipsec.secrets"
+// #undef SECRETS_FILE
+// #define SECRETS_FILE CONFIG_DIR "/ipsec.secretsssss"
 
 #define MAX_SECRETS_RECURSION 10
 
@@ -1470,6 +1472,15 @@ METHOD(stroke_cred_t, destroy, void,
 stroke_cred_t *stroke_cred_create(stroke_ca_t *ca)
 {
 	private_stroke_cred_t *this;
+
+	// charon.plugins.stroke.secrets_file が設定されてなければ "foo" を返すのかな
+	const char *tmp = (char *)lib->settings->get_str(lib->settings,
+								"%s.plugins.stroke.secrets_file", "foo",
+								lib->ns);
+	// TODO: strongswan.conf(5)
+	//
+	// strongswan.conf のパスは環境変数 STRONGSWAN_CONF で指定できるっぽい
+	// libstrongswan/library.c library_init()
 
 	INIT(this,
 		.public = {

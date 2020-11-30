@@ -1,5 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="remote 1234 charon" type="CLion_Remote" remoteCommand="tcp::1234" symbolFile="$USER_HOME$/opt/strongswan/libexec/ipsec/charon" sysroot="">
-    <method v="2" />
-  </configuration>
-</component>

@@ -40,6 +40,8 @@
 
 #include <collections/array.h>
 
+#include <unistd.h>
+
 /**
  * Number of old messages hashes we keep for retransmission.
  *

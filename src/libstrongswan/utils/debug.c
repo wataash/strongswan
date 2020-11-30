@@ -14,6 +14,7 @@
  */
 
 #include <stdarg.h>
+#include <unistd.h>
 
 #include "debug.h"
 
@@ -80,14 +81,24 @@ void dbg_default(debug_t group, level_t level, char *fmt, ...)
 	{
 		default_stream = stderr;
 	}
+#if 0
 	if (level <= default_level)
+#else
+	if (level <= default_level || getenv("WATAASH_DEBUG") != NULL)
+#endif
 	{
 		va_list args;
+
+		wataash_debug_lock();
+		wataash_debug(group, level, WATAASH_DEBUG_KIND_LIB);
 
 		va_start(args, fmt);
 		vfprintf(default_stream, fmt, args);
 		fprintf(default_stream, "\n");
 		va_end(args);
+
+		wataash_debug_reset();
+		wataash_debug_unlock();
 	}
 }
 

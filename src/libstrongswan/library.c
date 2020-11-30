@@ -17,6 +17,7 @@
 #include "library.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <utils/debug.h>
 #include <threading/thread.h>
@@ -311,6 +312,7 @@ bool library_init(char *settings, const char *namespace)
 
 	chunk_hash_seed();
 
+	// path to strongswan.conf
 	INIT(this,
 		.public = {
 			.get = _get,
@@ -347,9 +349,13 @@ bool library_init(char *settings, const char *namespace)
 	}
 #endif /* LEAK_DETECTIVE */
 
+	// DBG1(DBG_LIB, "before printf_hook_create"); // SEGV on macOS
 	pfh = printf_hook_create();
+	// DBG1(DBG_LIB, "printf_hook_create() done; now dbg_stderr() and DBG() available");
+
 	this->public.printf_hook = pfh;
 
+	// wow
 	pfh->add_handler(pfh, 'b', mem_printf_hook,
 					 PRINTF_HOOK_ARGTYPE_POINTER, PRINTF_HOOK_ARGTYPE_INT,
 					 PRINTF_HOOK_ARGTYPE_END);

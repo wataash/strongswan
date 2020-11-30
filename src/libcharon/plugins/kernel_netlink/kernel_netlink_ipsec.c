@@ -1336,6 +1336,14 @@ static void netlink_find_offload_feature(const char *ifname)
 		.cmd = ETHTOOL_GSSET_INFO,
 		.sset_mask = 1ULL << ETH_SS_FEATURES,
 	);
+	{
+		// unsigned long -- typeof(sizeof()) is unsigned long?
+		typeof(sizeof(uint32_t)) _extra = (sizeof(uint32_t));
+		typeof(sizeof(uint64_t)) _extra64 = (sizeof(uint64_t));
+		typeof(size_t) _extra_s; // size_t
+		typeof(ssize_t) _extra_ss; // ssize_t
+		asm("nop");
+	}
 	strncpy(ifr.ifr_name, ifname, IFNAMSIZ);
 	ifr.ifr_name[IFNAMSIZ-1] = '\0';
 	ifr.ifr_data = (void*)sset_info;

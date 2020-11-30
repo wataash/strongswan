@@ -46,6 +46,8 @@
 #include <processing/jobs/delete_ike_sa_job.h>
 #include <processing/jobs/initiate_tasks_job.h>
 
+#include <unistd.h>
+
 #ifdef ME
 #include <sa/ikev2/tasks/ike_me.h>
 #endif
@@ -1627,7 +1629,7 @@ METHOD(task_manager_t, process_message, status_t,
 		if (ike_cfg == NULL)
 		{
 			/* no config found for these hosts, destroy */
-			DBG1(DBG_IKE, "no IKE config found for %H...%H, sending %N",
+			DBG1(DBG_IKE, "noooo IKE config found for %H...%H, sending %N",
 				 me, other, notify_type_names, NO_PROPOSAL_CHOSEN);
 			send_notify_response(this, msg,
 								 NO_PROPOSAL_CHOSEN, chunk_empty);

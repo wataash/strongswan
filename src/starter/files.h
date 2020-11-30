@@ -17,6 +17,8 @@
 
 #define CONFIG_FILE     IPSEC_CONFDIR "/ipsec.conf"
 #define SECRETS_FILE    IPSEC_CONFDIR "/ipsec.secrets"
+// #undef SECRETS_FILE
+// #define SECRETS_FILE    IPSEC_CONFDIR "/ipsec.secretsssss"
 
 #define CHARON_CTL_FILE IPSEC_PIDDIR "/charon.ctl"
 

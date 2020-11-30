@@ -909,6 +909,8 @@ METHOD(daemon_t, initialize, bool,
 		return FALSE;
 	}
 
+	// rr: don't rc before this line -- otherwise the loaded plugins will be lost
+
 	/* Queue start_action job */
 	lib->processor->queue_job(lib->processor, (job_t*)start_action_job_create());
 

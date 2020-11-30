@@ -476,6 +476,12 @@ static int usage(char *error)
 
 int main(int argc, char *argv[])
 {
+	fprintf(stderr, "\x1b[34m%s\x1b[37m\n", __FILE__);
+	for (size_t i = 0; i < argc; i++) {
+		fprintf(stderr, "%zu: %s\n", i, argv[i]);
+	}
+	fprintf(stderr, "\x1b[0m");
+
 	const stroke_token_t *token;
 	char *cmd;
 	bool utc = FALSE;

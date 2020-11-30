@@ -182,6 +182,14 @@ int starter_start_charon (starter_config_t *cfg, bool no_fork, bool attach_gdb)
 	}
 	else
 	{
+		// {
+		// 	DBG1(DBG_APP, "fork-exec; arg:");
+		// 	for (char *const *cp = arg; *cp != NULL; cp++)
+		// 	{
+		// 		DBG2(DBG_APP, "%s", *cp);
+		// 	}
+		// 	DBG2(DBG_APP, "\n\n");
+		// }
 		unlink(CHARON_CTL_FILE);
 		_stop_requested = 0;
 
@@ -193,6 +201,7 @@ int starter_start_charon (starter_config_t *cfg, bool no_fork, bool attach_gdb)
 			return -1;
 		case 0:
 			/* child */
+			DBG1(DBG_APP, "child: charon %jd - %jd", (intmax_t)getppid(), (intmax_t)getpid());
 			setsid();
 			closefrom(3);
 			sigprocmask(SIG_SETMASK, 0, NULL);
@@ -202,6 +211,7 @@ int starter_start_charon (starter_config_t *cfg, bool no_fork, bool attach_gdb)
 			DBG1(DBG_APP, "can't execv(%s,...): %s", arg[0], strerror(errno));
 			exit(1);
 		default:
+			DBG1(DBG_APP, "parent: starter %jd - %d", (intmax_t)getpid(), pid);
 			/* father */
 			_charon_pid = pid;
 			while (attach_gdb)

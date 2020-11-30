@@ -95,6 +95,25 @@ static int initiate(unsigned int count, unsigned int delay)
 
 int main(int argc, char *argv[])
 {
+	{
+		FILE *f = fopen("/tmp/wataash/strongswan.debug.log", "a");
+		if (f == NULL) {
+			fprintf(stderr, "\x1b[31mcannnot open /tmp/wataash/strongswan.debug.log: %s\x1b[0m\n", strerror(errno));
+			f = fopen("/dev/null", "w");
+			if (f == NULL)
+				f = stderr;
+		}
+		fprintf(stderr, "\x1b[34m%s\x1b[37m\n", __FILE__);
+		fprintf(f, "\x1b[34mstroke\x1b[37m\n");
+		for (size_t i = 0; i < argc; i++) {
+			fprintf(stderr, "%zu: %s\n", i, argv[i]);
+			fprintf(f, "%zu: %s\n", i, argv[i]);
+		}
+		fprintf(stderr, "\x1b[0m");
+		fprintf(f, "\x1b[0m");
+		(void)fclose(f);
+	}
+
 	if (argc >= 3 && strcmp(argv[1], "initiate") == 0)
 	{
 		return initiate(atoi(argv[2]), argc > 3 ? atoi(argv[3]) : 0);

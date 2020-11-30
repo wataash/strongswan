@@ -1739,6 +1739,7 @@ static status_t generate_message(private_message_t *this, keymat_t *keymat,
 	}
 
 	DBG1(DBG_ENC, "generating %s", get_string(this, str, sizeof(str)));
+	DBG1(DBG_ENC, "--> %s", get_string(this, str, sizeof(str)));
 
 	if (keymat)
 	{
@@ -2669,6 +2670,7 @@ METHOD(message_t, parse_body, status_t,
 	}
 
 	DBG1(DBG_ENC, "parsed %s", get_string(this, str, sizeof(str)));
+	DBG1(DBG_ENC, "<-- %s", get_string(this, str, sizeof(str)));
 
 	if (keymat && keymat->get_version(keymat) == IKEV1)
 	{

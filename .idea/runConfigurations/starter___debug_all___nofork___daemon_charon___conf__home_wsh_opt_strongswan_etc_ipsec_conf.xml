@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="charon" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="strongswan" TARGET_NAME="cbt0" CONFIG_NAME="cbt0" RUN_PATH="$PROJECT_DIR$/build/src/charon/.libs/charon">
+  <configuration default="false" name="starter --debug-all --nofork --daemon charon --conf /home/wsh/opt/strongswan/etc/ipsec.conf" type="CLionExternalRunConfiguration" factoryName="Application" PROGRAM_PARAMS="--debug-all --nofork --daemon charon --conf $USER_HOME$/opt/strongswan/etc/ipsec.conf" REDIRECT_INPUT="false" ELEVATE="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="strongswan" TARGET_NAME="cbt0" CONFIG_NAME="cbt0" RUN_PATH="$PROJECT_DIR$/build/src/starter/.libs/starter">
     <envs>
       <env name="IPSEC_DIR" value="$USER_HOME$/opt/strongswan/libexec/ipsec" />
       <env name="IPSEC_BINDIR" value="$USER_HOME$/opt/strongswan/bin" />

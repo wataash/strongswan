@@ -74,14 +74,24 @@ static void starter_dbg(debug_t group, level_t level, char *fmt, ...)
 	char *current = buffer, *next;
 	va_list args;
 
+#if 0
 	if (level <= current_loglevel)
+#else
+	if (level <= current_loglevel || getenv("WATAASH_DEBUG") != NULL)
+#endif
 	{
 		if (log_to_stderr)
 		{
+			wataash_debug_lock();
+			wataash_debug(group, level, WATAASH_DEBUG_KIND_APP);
+
 			va_start(args, fmt);
 			vfprintf(stderr, fmt, args);
 			va_end(args);
 			fprintf(stderr, "\n");
+
+			wataash_debug_reset();
+			wataash_debug_unlock();
 		}
 		if (log_to_syslog)
 		{
@@ -341,6 +351,25 @@ static void usage(char *name)
 
 int main (int argc, char **argv)
 {
+	{
+		FILE *f = fopen("/tmp/wataash/strongswan.debug.log", "a");
+		if (f == NULL) {
+			fprintf(stderr, "\x1b[31mcannnot open /tmp/wataash/strongswan.debug.log: %s\x1b[0m\n", strerror(errno));
+			f = fopen("/dev/null", "w");
+			if (f == NULL)
+				f = stderr;
+		}
+		fprintf(stderr, "\x1b[34m%s\x1b[37m\n", __FILE__);
+		fprintf(f, "\x1b[34mstroke\x1b[37m\n");
+		for (size_t i = 0; i < argc; i++) {
+			fprintf(stderr, "%zu: %s\n", i, argv[i]);
+			fprintf(f, "%zu: %s\n", i, argv[i]);
+		}
+		fprintf(stderr, "\x1b[0m");
+		fprintf(f, "\x1b[0m");
+		(void)fclose(f);
+	}
+
 	starter_config_t *cfg = NULL;
 	starter_config_t *new_cfg;
 	starter_conn_t *conn, *conn2;
@@ -480,8 +509,9 @@ int main (int argc, char **argv)
 	if (getuid() != 0)
 	{
 		DBG1(DBG_APP, "permission denied (must be superuser)");
-		cleanup();
-		exit(LSB_RC_NOT_ALLOWED);
+		DBG1(DBG_APP, "... but force continue");
+		// cleanup();
+		// exit(LSB_RC_NOT_ALLOWED);
 	}
 #endif
 
