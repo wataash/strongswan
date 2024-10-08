@@ -2082,6 +2082,7 @@ AC_CONFIG_FILES([
 	src/charon-cmd/Makefile
 	src/charon-svc/Makefile
 	src/charon-systemd/Makefile
+	src/swan_sandbox/Makefile
 	src/libcharon/Makefile
 	src/libcharon/plugins/eap_aka/Makefile
 	src/libcharon/plugins/eap_aka_3gpp/Makefile

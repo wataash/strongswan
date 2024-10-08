@@ -91,6 +91,35 @@ struct private_file_logger_t {
 	rwlock_t *lock;
 };
 
+static void wataash_level_color(private_file_logger_t *this, level_t level)
+{
+	switch (level) {
+	case LEVEL_SILENT:
+		fprintf(this->out, "\x1b[31m");
+		break;
+	case LEVEL_AUDIT:
+		fprintf(this->out, "\x1b[33m");
+		break;
+	case LEVEL_CTRL:
+		fprintf(this->out, "\x1b[34m");
+		break;
+	case LEVEL_DIAG:
+		/* white */
+		break;
+	case LEVEL_RAW:
+	case LEVEL_PRIVATE:
+		fprintf(this->out, "\x1b[37m");
+		break;
+	default:
+		fprintf(this->out, "\x1b[31m");
+		break;
+	}
+}
+
+static void wataash_level_color_reset(private_file_logger_t *this) {
+	fprintf(this->out, "\x1b[0m");
+}
+
 METHOD(logger_t, log_, void,
 	private_file_logger_t *this, debug_t group, level_t level, int thread,
 	ike_sa_t* ike_sa, const char *message)
@@ -148,6 +177,7 @@ METHOD(logger_t, log_, void,
 
 	/* prepend a prefix in front of every line */
 	this->mutex->lock(this->mutex);
+	wataash_level_color(this, level);
 	while (TRUE)
 	{
 		next = strchr(current, '\n');
@@ -177,6 +207,7 @@ METHOD(logger_t, log_, void,
 		fprintf(this->out, "%.*s\n", (int)(next - current), current);
 		current = next + 1;
 	}
+	wataash_level_color_reset(this);
 #ifndef HAVE_SETLINEBUF
 	if (this->flush_line)
 	{

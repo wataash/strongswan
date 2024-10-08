@@ -46,7 +46,11 @@
 /**
  * PID file, in which charon stores its process id
  */
+#ifdef WATAASH_HACK
+#define PID_FILE IPSEC_PIDDIR "/charon_sandbox_charon.pid"
+#else // WATAASH_HACK
 #define PID_FILE IPSEC_PIDDIR "/charon.pid"
+#endif // WATAASH_HACK
 
 /**
  * Default user and group
@@ -331,7 +335,7 @@ static void usage(const char *msg)
 /**
  * Main function, starts the daemon.
  */
-int main(int argc, char *argv[])
+int swan_sandbox_charon_main(int argc, char *argv[])
 {
 	struct sigaction action;
 	int group, status = SS_RC_INITIALIZATION_FAILED;
@@ -341,6 +345,15 @@ int main(int argc, char *argv[])
 
 	/* logging for library during initialization, as we have no bus yet */
 	dbg = dbg_stderr;
+
+#ifdef WATAASH_HACK
+	if (getenv("STRONGSWAN_CONF") == NULL) {
+		dbg(DBG_DMN, 1, "export STRONGSWAN_CONF=/home/wsh/doc/t/strongswan_dev_strongswan.conf.sandbox_charon.conf");
+		(void)setenv("STRONGSWAN_CONF", "/home/wsh/doc/t/strongswan_dev_strongswan.conf.sandbox_charon.conf", 0);
+	} else {
+		dbg(DBG_DMN, 1, "STRONGSWAN_CONF: %s", getenv("STRONGSWAN_CONF"));
+	}
+#endif // WATAASH_HACK
 
 	/* initialize library */
 	if (!library_init(NULL, "charon"))
@@ -407,7 +420,7 @@ int main(int argc, char *argv[])
 				status = 0;
 				goto deinit;
 			case 'v':
-				printf("strongSwan %s\n", VERSION);
+				printf("Linux strongSwan %s\n", VERSION);
 				status = 0;
 				goto deinit;
 			case 'l':

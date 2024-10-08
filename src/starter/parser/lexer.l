@@ -59,7 +59,21 @@ static void include_files(parser_helper_t *ctx);
 /* state used to scan quoted strings */
 %x str
 
+%x wataash_in_comment
+
 %%
+
+"wataash_comment_begin"	{
+	yy_push_state(wataash_in_comment, yyscanner);
+}
+<wataash_in_comment>{
+	"wataash_comment_end" {
+		// printf("wataash_comment_end\n");
+		yy_pop_state(yyscanner);
+	}
+	. // printf("wataash_in_comment: discard character: %s\n", yytext);
+	\n // printf("wataash_in_comment: discard nl\n");
+}
 
 ^[\t ]*"version"[^\n]*$	/* eat legacy version declaration */
 ^[\t ]+					return SPACES;

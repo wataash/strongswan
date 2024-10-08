@@ -63,6 +63,8 @@ if USE_SYSTEMD
   SUBDIRS += charon-systemd
 endif
 
+SUBDIRS += swan_sandbox
+
 if USE_NM
   SUBDIRS += charon-nm
 endif
